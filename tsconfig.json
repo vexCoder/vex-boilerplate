@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "types": [
+      "node"
+    ],
     "lib": [
       "dom",
-      "dom.iterable",
       "esnext"
     ],
+    "outDir": "./public",
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -21,5 +27,12 @@
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "test",
+    "release",
+    "src/electron.js",
+    "src/electron.ts",
+    "**/*.js"
   ]
 }

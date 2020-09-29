@@ -1,39 +1,112 @@
 {
   "name": "vex-boilerplate",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "author": "vexCoder",
+  "license": "CC0-1.0",
+  "main": "public/electron.js",
+  "homepage": "./",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.0.4",
+    "@testing-library/user-event": "^12.1.6",
+    "@types/jest": "^26.0.14",
+    "@types/lodash": "^4.14.161",
+    "@types/node": "^14.11.2",
+    "@types/react": "^16.9.49",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
+    "@typescript-eslint/eslint-plugin": "2.x",
+    "@typescript-eslint/parser": "2.x",
+    "concurrently": "^5.3.0",
+    "copyfiles": "^2.3.0",
+    "cross-env": "^7.0.2",
+    "electron": "^10.1.2",
+    "electron-builder": "^22.8.1",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.2",
+    "react-hot-loader": "^4.13.0",
+    "react-scripts": "^3.4.3",
+    "typescript": "^4.0.3",
+    "wait-on": "^5.2.0"
+  },
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^24.0.0",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
+    "@material-ui/core": "^4.11.0",
+    "dotenv": "^8.2.0",
+    "electron-is-dev": "^1.2.0",
+    "lodash": "^4.17.20",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
-    "typescript": "~3.7.2"
+    "react-app-rewire-hot-loader": "^2.0.1",
+    "react-app-rewired": "^2.1.6",
+    "react-dom": "npm:@hot-loader/react-dom",
+    "react-router-dom": "^5.2.0",
+    "recoil": "^0.0.13"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject",
+    "dev": "concurrently \"yarn dev:renderer\" \"yarn dev:main\" \"wait-on http://localhost:3000/ && electron src/electron.js\"",
+    "dev:renderer": "set BROWSER=none && yarn start",
+    "dev:main": "tsc src/electron.ts --esModuleInterop true --moduleResolution node",
+    "prepackage": "tsc src/electron.ts --esModuleInterop true --moduleResolution node && yarn build && copyfiles --flat src/electron.js build",
+    "package": "electron-builder build --publish never",
+    "package:dir": "yarn prepackage && electron-builder build --dir",
+    "postinstall": "electron-builder install-app-deps"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+  "browserslist": [],
+  "build": {
+    "productName": "vexBoilerplate",
+    "appId": "org.vex.boilerplate",
+    "extraFiles": [],
+    "files": [
+      "build/",
+      "node_modules/",
+      "package.json"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "msi"
+      ]
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "rpm",
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    },
+    "extraResources": [
+      "./resources/**"
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "vex-boilerplate",
+      "repo": "vex-boilerplate",
+      "private": false
+    }
   }
 }
